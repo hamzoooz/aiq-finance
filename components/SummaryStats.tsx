@@ -34,7 +34,7 @@ export const SummaryStats: React.FC<SummaryStatsProps> = ({ transactions }) => {
     <div className="space-y-6">
       {/* Total Card */}
       <div className="bg-gradient-to-r from-aiq-dark to-slate-800 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div className="absolute top-0 left-0 w-full h-full opacity-20 bg-gradient-to-br from-white/10 to-transparent"></div>
         <div className="relative z-10 flex justify-between items-center">
           <div>
             <p className="text-gray-400 text-sm font-medium mb-1">إجمالي المصروفات</p>
@@ -57,9 +57,9 @@ export const SummaryStats: React.FC<SummaryStatsProps> = ({ transactions }) => {
             <Wallet className="w-5 h-5 text-gray-500" />
             التوزيع حسب النوع الرئيسي
           </h4>
-          <div className="w-full h-64">
+          <div className="w-full min-w-0 h-64 min-h-64">
             {categoryData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={256} minWidth={0}>
                 <PieChart>
                   <Pie
                     data={categoryData}
@@ -90,9 +90,9 @@ export const SummaryStats: React.FC<SummaryStatsProps> = ({ transactions }) => {
             <TrendingUp className="w-5 h-5 text-gray-500" />
             أعلى البنود تكلفة
           </h4>
-          <div className="w-full h-64">
+          <div className="w-full min-w-0 h-64 min-h-64">
              {subCategoryData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={256} minWidth={0}>
                 <BarChart data={subCategoryData} layout="vertical" margin={{ left: 40, right: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                   <XAxis type="number" hide />

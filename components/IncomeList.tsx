@@ -5,7 +5,7 @@ import { INCOME_COLORS } from '../constants';
 
 interface IncomeListProps {
   records: IncomeRecord[];
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => void | Promise<void>;
 }
 
 export const IncomeList: React.FC<IncomeListProps> = ({ records, onDelete }) => {

@@ -131,68 +131,62 @@ export const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, expen
       </div>
     `;
 
-    // 2. Create Print Container
-    const printContainer = document.createElement('div');
-    printContainer.id = 'aiq-print-root';
-    printContainer.innerHTML = htmlContent;
-    document.body.appendChild(printContainer);
-
-    // 3. Add Print Styles
-    const style = document.createElement('style');
-    style.id = 'aiq-print-style';
-    style.innerHTML = `
+    const printStyles = `
       @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-      
-      @media screen {
-        #aiq-print-root { display: none; }
-      }
-      
-      @media print {
-        body > *:not(#aiq-print-root) { display: none !important; }
-        #aiq-print-root { display: block !important; position: absolute; top: 0; left: 0; width: 100%; direction: rtl; }
-        
-        @page { margin: 10mm; size: auto; }
-
-        /* Report Styles inside Print */
-        .report-container { font-family: 'Cairo', sans-serif; color: #1f2937; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f3f4f6; padding-bottom: 20px; }
-        .logo { height: 50px; object-fit: contain; }
-        .title { text-align: right; }
-        .title h1 { margin: 0; color: #9d00ff; font-size: 24px; }
-        .title p { margin: 5px 0 0; color: #6b7280; font-size: 14px; }
-        
-        .summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
-        .card { padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb; text-align: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        .card.income { background-color: #ecfdf5; border-color: #a7f3d0; }
-        .card.expense { background-color: #fff1f2; border-color: #fecdd3; }
-        .card.net { background-color: #f8fafc; border-color: #e2e8f0; }
-        .card h3 { margin: 0 0 10px; font-size: 14px; color: #4b5563; }
-        .card p { margin: 0; font-size: 20px; font-weight: bold; }
-        
-        table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 12px; }
-        th { background-color: #f9fafb; padding: 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: bold; color: #374151; -webkit-print-color-adjust: exact; }
-        td { padding: 10px; border-bottom: 1px solid #f3f4f6; }
-        .section-title { font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #111827; margin-top: 30px; }
-        .amount { font-weight: bold; direction: ltr; text-align: left; }
-        .amount.positive { color: #059669; }
-        .amount.negative { color: #e11d48; }
-        .footer { margin-top: 50px; text-align: center; color: #9ca3af; font-size: 10px; border-top: 1px solid #e5e7eb; padding-top: 20px; }
-      }
+      @page { margin: 10mm; size: auto; }
+      body { margin: 0; direction: rtl; }
+      .report-container { font-family: 'Cairo', sans-serif; color: #1f2937; }
+      .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f3f4f6; padding-bottom: 20px; }
+      .logo { height: 50px; object-fit: contain; }
+      .title { text-align: right; }
+      .title h1 { margin: 0; color: #9d00ff; font-size: 24px; }
+      .title p { margin: 5px 0 0; color: #6b7280; font-size: 14px; }
+      .summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+      .card { padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb; text-align: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .card.income { background-color: #ecfdf5; border-color: #a7f3d0; }
+      .card.expense { background-color: #fff1f2; border-color: #fecdd3; }
+      .card.net { background-color: #f8fafc; border-color: #e2e8f0; }
+      .card h3 { margin: 0 0 10px; font-size: 14px; color: #4b5563; }
+      .card p { margin: 0; font-size: 20px; font-weight: bold; }
+      table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 12px; }
+      th { background-color: #f9fafb; padding: 10px; text-align: right; border-bottom: 2px solid #e5e7eb; font-weight: bold; color: #374151; -webkit-print-color-adjust: exact; }
+      td { padding: 10px; border-bottom: 1px solid #f3f4f6; }
+      .section-title { font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #111827; margin-top: 30px; }
+      .amount { font-weight: bold; direction: ltr; text-align: left; }
+      .amount.positive { color: #059669; }
+      .amount.negative { color: #e11d48; }
+      .footer { margin-top: 50px; text-align: center; color: #9ca3af; font-size: 10px; border-top: 1px solid #e5e7eb; padding-top: 20px; }
     `;
-    document.head.appendChild(style);
 
-    // 4. Print
-    window.print();
+    const printWindow = window.open('', '_blank', 'width=1000,height=800');
+    if (!printWindow) {
+      window.alert('يرجى السماح بالنوافذ المنبثقة لتصدير PDF.');
+      return;
+    }
 
-    // 5. Cleanup
-    const cleanup = () => {
-      if (document.body.contains(printContainer)) document.body.removeChild(printContainer);
-      if (document.head.contains(style)) document.head.removeChild(style);
+    printWindow.document.open();
+    printWindow.document.write(`
+      <!doctype html>
+      <html lang="ar" dir="rtl">
+      <head>
+        <meta charset="UTF-8" />
+        <title>تقرير مالي</title>
+        <style>${printStyles}</style>
+      </head>
+      <body>
+        ${htmlContent}
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
+
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+      };
     };
-
-    // Attempt to cleanup after print dialog closes or after a timeout
-    window.addEventListener('afterprint', cleanup, { once: true });
-    setTimeout(cleanup, 2000); 
   };
 
   return (

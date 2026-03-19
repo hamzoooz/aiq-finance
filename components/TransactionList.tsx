@@ -5,7 +5,7 @@ import { COLORS } from '../constants';
 
 interface TransactionListProps {
   transactions: ExpenseRecord[];
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => void | Promise<void>;
 }
 
 export const TransactionList: React.FC<TransactionListProps> = ({ transactions, onDelete }) => {

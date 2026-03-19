@@ -4,7 +4,7 @@ import { IncomeRecord, IncomeType, SubscriptionPlan } from '../types';
 import { SUBSCRIPTION_PRICES } from '../constants';
 
 interface IncomeFormProps {
-  onAdd: (income: Omit<IncomeRecord, 'id' | 'date'>) => void;
+  onAdd: (income: Omit<IncomeRecord, 'id' | 'date'>) => void | Promise<void>;
 }
 
 export const IncomeForm: React.FC<IncomeFormProps> = ({ onAdd }) => {

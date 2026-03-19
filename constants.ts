@@ -1,7 +1,7 @@
 import { CategoryStructure, MainCategory, IncomeType, SubscriptionPlan } from './types';
+import aiqLogoWide from './logo.png';
 
-// Updated Logo URL as requested
-export const AIQ_LOGO_WIDE = "https://i.ibb.co/jkYjVJqf/logo.png"; 
+export const AIQ_LOGO_WIDE = aiqLogoWide;
 export const LOGO_URL_1 = "";
 export const LOGO_URL_2 = "";
 

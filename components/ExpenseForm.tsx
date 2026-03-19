@@ -4,7 +4,7 @@ import { CATEGORY_DATA } from '../constants';
 import { MainCategory, ExpenseRecord } from '../types';
 
 interface ExpenseFormProps {
-  onAdd: (expense: Omit<ExpenseRecord, 'id' | 'date'>) => void;
+  onAdd: (expense: Omit<ExpenseRecord, 'id' | 'date'>) => void | Promise<void>;
 }
 
 export const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAdd }) => {
